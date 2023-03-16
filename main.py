@@ -1,42 +1,51 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
+from DFT import *
 
 with wave.open('note_basson_plus_sinus_1000_Hz.wav', 'rb') as wav_file:
-    # Get the number of frames in the file
+    # nb d'échantillon du fichier
     num_frames = wav_file.getnframes()
 
-    # Get the sample rate of the file
+    # Retourne la fréquence d'échantillonage en Hz
     sample_rate = wav_file.getframerate()
 
-    # Get the duration of the file
-    duration = num_frames / float(sample_rate)
-
-    # Read all the frames from the file
+    # lit tout le contenu du fichier et stock les amplitudes dans frames
     frames = wav_file.readframes(num_frames)
 
-    # Convertir les données audio en un tableau numpy
-    audio_buffer = np.frombuffer(frames, dtype=np.int16)
-
-    print("Sample rate: ", sample_rate)
+    # Convertir les échantillons audio en une série temporelle de valeurs d'amplitude
+    signal = np.frombuffer(frames, dtype=np.int16)
 
 
-    
+    freq_fundamental, harmonic_amplitude, harmonic_phases = fct_DFT(signal,sample_rate)
 
-with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
-    # Get the number of frames in the file
-    num_frames = wav_file.getnframes()
+    # Pad the harmonic amplitude and phases arrays with zeros if necessary
+    if len(harmonic_amplitude) < len(signal):
+        harmonic_amplitude = np.pad(harmonic_amplitude, (0, len(signal) - len(harmonic_amplitude)))
+    if len(harmonic_phases) < len(signal):
+        harmonic_phases = np.pad(harmonic_phases, (0, len(signal) - len(harmonic_phases)))
 
-    # Get the sample rate of the file
-    sample_rate = wav_file.getframerate()
+    N = len(signal)  # length of the signal
+    n1 = np.arange(0, N, 1)  # create an array (start, stop, step)
+    t_fft1 = np.linspace(-0.5, 0.5, N, endpoint=False)
 
-    # Get the duration of the file
-    duration = num_frames / float(sample_rate)
+    fig, axs = plt.subplots(3, 1)
 
-    # Read all the frames from the file
-    frames = wav_file.readframes(num_frames)
+    # plot the original signal
+    axs[0].stem(n1, signal)
+    axs[0].set_title('x1')
 
-    # Convertir les données audio en un tableau numpy
-    audio_buffer = np.frombuffer(frames, dtype=np.int16)
+    # plot the harmonic amplitude
+    axs[1].stem(t_fft1, harmonic_amplitude)
+    axs[1].set_title('harmonic_amplitude')
 
-    print("Sample rate: ", sample_rate)
+    # plot the harmonic phases
+    axs[2].stem(t_fft1, harmonic_phases)
+    axs[2].set_title('harmonic_phases')
+
+    plt.tight_layout()
+    plt.show()
+
+
+
+
