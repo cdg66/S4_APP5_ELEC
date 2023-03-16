@@ -43,6 +43,15 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     # plt.title('Amplitude des harmoniques')
     # plt.show()
 
+
+    fig, axs = plt.subplots(2, 1)
+    t_fft1 = np.linspace(-0.5, 0.5, 79999, endpoint=False)
+    axs[0].stem(t_fft1, harmonic_amplitude)
+    axs[0].set_title('Module de X1')
+
+    axs[1].stem(t_fft1, harmonic_phases)
+    axs[1].set_title('Angle de X1')
+
     plt.tight_layout()
     plt.show()
 
