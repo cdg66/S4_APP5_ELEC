@@ -17,32 +17,22 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     signal = np.frombuffer(frames, dtype=np.int16)
 
     freq_fundamental, harmonic_amplitude, harmonic_phases, fft_signal,freqs = fct_DFT(signal,sample_rate)
-    # graphique du FFT du signal
-    # x = np.arange(num_frames)
-    # plt.plot(x,signal)
-    # plt.title('Signal audio originale')
-    # plt.xlabel('Fréquence')
-    # plt.ylabel('Amplitude')
-    #
-    # plt.show()
-    #
-    # #graphique du FFT du signal
-    # x = np.arange(-(num_frames/2),num_frames/2,1)
-    # #plt.plot(x, np.abs(fft_signal))
-    # plt.plot(np.abs(fft_signal))
-    # plt.title('FFT du signal audio')
-    # plt.xlim(65000, 95000)
-    # plt.xlabel('Fréquence')
-    # plt.ylabel('Amplitude')
-    # plt.show()
+    #graphique du FFT du signal
+    x = np.arange(num_frames)
+    plt.plot(x,signal)
+    plt.title('Signal audio originale')
+    plt.xlabel('Fréquence')
+    plt.ylabel('Amplitude')
+    plt.show()
 
-    # fq= ((freqs / 2)-1)
-    # plt.stem(fq, harmonic_amplitude)
-    # plt.xlabel('Fréquence (Hz)')
-    # plt.ylabel('Amplitude')
-    # plt.title('Amplitude des harmoniques')
-    # plt.show()
+    #graphique du FFT du signal
+    freq = np.fft.fftshift(np.fft.fftfreq(160000))
+    plt.plot(freq, np.abs(fft_signal))
+    plt.title('FFT du signal audio')
 
+    plt.xlabel('Fréquence')
+    plt.ylabel('Amplitude')
+    plt.show()
 
     fig, axs = plt.subplots(2, 1)
     t_fft1 = np.linspace(-0.5, 0.5, 79999, endpoint=False)
@@ -55,4 +45,13 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     plt.tight_layout()
     plt.show()
 
-
+    # fq= ((freqs / 2)-1)
+    # plt.stem(fq, harmonic_amplitude)
+    # plt.xlabel('Fréquence (Hz)')
+    # plt.ylabel('Amplitude')
+    # plt.title('Amplitude des harmoniques')
+    # plt.show()
+#x = np.arange(-(num_frames/2),num_frames/2,1)
+    # x = np.arange(-(len(harmonic_amplitude)/2), (len(harmonic_amplitude)/2), 1)
+    #plt.plot(x, np.abs(fft_signal))
+    # plt.xlim(65000, 95000)

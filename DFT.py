@@ -11,13 +11,13 @@ def fct_DFT(signal,sample_rate):
     windowed_signal = fft_signal * window
 
     # Trouver les fréquences et amplitudes des harmoniques
-    freqs = np.fft.fftfreq(len(signal), 1/sample_rate)
+    freqs = np.fft.fftfreq(len(windowed_signal), 1/sample_rate)
     harmonic_indices = np.where(freqs > 0)
     harmonic_freqs = freqs[harmonic_indices]
-    harmonic_amplitude = np.abs(fft_signal[harmonic_indices])
+    harmonic_amplitude = np.abs(windowed_signal[harmonic_indices])
 
     # La phase des harmoniques
-    harmonic_phases = np.angle(fft_signal[harmonic_indices])
+    harmonic_phases = np.angle(windowed_signal[harmonic_indices])
 
     # Trouver fréquence fondamentale
     fundamental_index = np.argmax(harmonic_amplitude)
