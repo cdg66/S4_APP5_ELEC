@@ -16,8 +16,8 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     #Convertir les échantillons audio en une série temporelle de valeurs d'amplitude
     signal = np.frombuffer(frames, dtype=np.int16)
 
-    freq_fundamental, harmonic_amplitude, harmonic_phases, fft_signal,freqs = fct_DFT(signal,sample_rate)
-    #graphique du FFT du signal
+    freq_fundamental, fundamental_amplitude, harmonic_amplitude, harmonic_phases, harmonic_frequencies, fft_signal = fct_DFT(signal,sample_rate)
+    # graphique du FFT du signal
     x = np.arange(num_frames)
     plt.plot(x,signal)
     plt.title('Signal audio originale')
@@ -25,7 +25,7 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     plt.ylabel('Amplitude')
     plt.show()
 
-    #graphique du FFT du signal
+    # graphique du FFT du signal
     freq = np.fft.fftshift(np.fft.fftfreq(160000))
     plt.plot(freq, np.abs(fft_signal))
     plt.title('FFT du signal audio')
@@ -36,10 +36,10 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
 
     fig, axs = plt.subplots(2, 1)
     t_fft1 = np.linspace(-0.5, 0.5, 79999, endpoint=False)
-    axs[0].stem(t_fft1, harmonic_amplitude)
+    axs[0].stem(harmonic_amplitude)
     axs[0].set_title('Module de X1')
 
-    axs[1].stem(t_fft1, harmonic_phases)
+    axs[1].stem(harmonic_phases)
     axs[1].set_title('Angle de X1')
 
     plt.tight_layout()
