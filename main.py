@@ -2,7 +2,7 @@ import wave
 import numpy as np
 import matplotlib.pyplot as plt
 from harmoniques import *
-from Fondamentale import *
+from fondamentale import *
 
 with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     # nb d'échantillon du fichier
