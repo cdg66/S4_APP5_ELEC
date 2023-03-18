@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from harmoniques import *
 from fondamentale import *
+from enveloppe_temporel import *
 
 with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     # nb d'échantillon du fichier
@@ -20,8 +21,9 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     harmonique_amplitude, harmonique_phase, harmonique_frequence,sin_sum = fct_harmoniques(signal, sample_rate)
 
     fondamentale_amplitude, fondamentale_phase, fondamentale_frequence, fft_signal_shift = fct_fondamentale(signal,sample_rate)
-
-
+    w = np.pi/1000
+    N = get_filter_order(w,sample_rate )
+    print(N)
 
 
     def fct_graph_fft(graph_fft):
