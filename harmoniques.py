@@ -12,9 +12,11 @@ def fct_harmoniques(signal, sample_rate):
     freqs = np.fft.fftfreq(len(fft_signal)) * sample_rate
 
     # Trouver les maximums locaux dans le spectre
-    peaks, _ = find_peaks(np.abs(fft_signal), distance=100)
+    #peaks, _ = find_peaks(np.abs(fft_signal), distance=100)
+    peaks, _ = find_peaks(np.abs(fft_signal)[:len(fft_signal) // 2], distance=100)
 
     # Garder les 32 plus grands maximums locaux
+
     peaks = peaks[np.argsort(np.abs(fft_signal[peaks]))[::-1]][:32]
 
     # Déterminer l'amplitude relative de chaque harmonique
@@ -25,14 +27,17 @@ def fct_harmoniques(signal, sample_rate):
 
     # Déterminer la fréquence de chaque harmonique
     harmonique_frequence = freqs[peaks]
+    # sommations des sinus
+    for i in range(32):
+        sin_sum = harmonique_amplitude[i] * (np.sin(2* np.pi * harmonique_frequence[i] *len(signal) + harmonique_phase[i]))
 
     #Retourner les amplitudes, phases et fréquences des 32 harmoniques
     for i in range(len(harmonique_amplitude)):
         print(
             f"Harmonic {i + 1}: Frequency: {harmonique_frequence[i]:.2f} Hz, Amplitude: {harmonique_amplitude[i]:.2f}, Phase: {harmonique_phase[i]:.2f} radians")
 
-    return harmonique_amplitude, harmonique_phase, harmonique_frequence
-#
+    return harmonique_amplitude, harmonique_phase, harmonique_frequence, sin_sum
+
 # def fct_harmoniques(signal, sample_rate):
 #     # Appliquer une fenêtre de Hanning
 #     window = np.hanning(len(signal))
@@ -61,6 +66,6 @@ def fct_harmoniques(signal, sample_rate):
 #             f"Harmonic {i + 1}: Frequency: {harmonique_frequence[i]:.2f} Hz, Amplitude: {harmonique_amplitude[i]:.2f}, Phase: {harmonique_phase[i]:.2f} radians")
 #
 #     return harmonique_amplitude, harmonique_phase, harmonique_frequence
-#
+
 
 

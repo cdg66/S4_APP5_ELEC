@@ -17,7 +17,7 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
     #Convertir les échantillons audio en une série temporelle de valeurs d'amplitude
     signal = np.frombuffer(frames, dtype=np.int16)
 
-    harmonique_amplitude, harmonique_phase, harmonique_frequence = fct_harmoniques(signal, sample_rate)
+    harmonique_amplitude, harmonique_phase, harmonique_frequence,sin_sum = fct_harmoniques(signal, sample_rate)
 
     fondamentale_amplitude, fondamentale_phase, fondamentale_frequence, fft_signal_shift = fct_fondamentale(signal,sample_rate)
 
@@ -76,6 +76,6 @@ with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
 
     fct_graph_fft(graph_fft=False)
 
-    fct_graph_harmoniques(graph_harmoniques=False)
+    fct_graph_harmoniques(graph_harmoniques=True)
 
 
