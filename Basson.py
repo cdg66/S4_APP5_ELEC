@@ -1,4 +1,5 @@
 from DFT import *
+import struct
 import scipy
 
 with wave.open('note_basson_plus_sinus_1000_Hz.wav', 'rb') as wav_file:
@@ -14,92 +15,95 @@ with wave.open('note_basson_plus_sinus_1000_Hz.wav', 'rb') as wav_file:
     # Convertir les échantillons audio en une série temporelle de valeurs d'amplitude
     signal = np.frombuffer(frames, dtype=np.int16)
 
-    #freq_fundamental, fundamental_amplitude, harmonic_amplitude, harmonic_phases, harmonic_frequencies, fft_signal = fct_DFT(
-    #    signal, sample_rate)
-    # graphique du FFT du signal
-    x = np.arange(num_frames)
-    plt.plot(x, signal)
-    plt.title('Signal audio originale')
-    plt.xlabel('Fréquence')
-    plt.ylabel('Amplitude')
-    plt.show()
+    params = wav_file.getparams()
 
-    #Calcul du filtre Passe-Bas
-    Fe = sample_rate # 44100
-    w = np.pi * 2 * Fe
+#freq_fundamental, fundamental_amplitude, harmonic_amplitude, harmonic_phases, harmonic_frequencies, fft_signal = fct_DFT(
+#    signal, sample_rate)
+# graphique du FFT du signal
+x = np.arange(num_frames)
+plt.plot(x, signal)
+plt.title('Signal audio originale')
+plt.xlabel('Fréquence')
+plt.ylabel('Amplitude')
+plt.show()
 
-    N = 1024
-    Nm1 = N-1
-    FcL = 980
-    FcH = 1020
-    FcLP = (FcH-FcL)/2
-    w0 = 2 * np.pi * 1000
-    mc = (FcLP/Fe)*N #0.46439909297052157
-    mc = 1
-    K = mc*2+1
-    print(mc)
-    # generatre filter in the frequency domain
-    filter = np.zeros(N)
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1)
-    filter[0] = 1
-    filter[1] = 1
-    #filter[2] = 0.5
-    filter[N-1] = 1
-    #filter[N - 2] = 0.5
-    x = np.arange(N)
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1)
-    ax1.plot(x, filter)
-    # inverse FFt to get the filter in the time domain
-    #filter = np.real(np.fft.fftshift(np.fft.ifft(filter)))
-    filter = np.fft.ifft(filter)
-    #x = np.arange(-N / 2, N / 2)
-    ax2.plot(x, filter)
-    #
+#calculate lowpassfilter
+N = 1024
+fe = sample_rate
+f0 = 1000
+f1 = 980
+f2 = 1020
+fc = (1020-980)/2
+print(fc)
+m = (fc*N)/fe # what it truly is
+#m = 1 # what we aproximate at
+print(m)
+K = 2 * m + 1
+print(K)
+k = np.arange(-N/2,N/2,1)
+print(k)
+Hk = np.zeros(N)
+pos = np.linspace(-(N / 2) + 1, N / 2, N)
+index = np.arange(0,N,1)
+d = np.zeros(N) #dirac
+d[512] = 1
+for i in range(len(Hk)):
+    #denominator = np.sin((np.pi * k[i]) / N)
+    if k[i] != 0:
+        Hk[i] = (1/N)*(np.sin((np.pi * k[i]* K)/N )/np.sin((np.pi * k[i])/N ))
+    else:
+        Hk[i] = K/N  # or any other value you want to assign when denominator is zero
+print(Hk)
+plt.plot(pos,Hk)
+plt.title("Hk lowpass")
+plt.xlabel('temps')
+plt.ylabel('Amplitude')
+plt.show()
 
-    # Convert it to a band reject filter
-    # dirac = np.zeros(N) #create dirac
-    # dirac[0] = 1
-    #
-    # for n in range(len(filter)):
-    #
-    #     #filter[n] = filter[n] * currentcos
-    #     filter[n] = dirac[n] - 2*filter[n] * np.cos(w0 * x[n])
-    # print(filter)
-    # ax3.plot(x, filter)
-    # plt.show()
-    # plt.plot(x, filter)
-    # plt.title('Filter offsetted')
-    #
-    # plt.xlabel('Fréquence')
-    # plt.ylabel('Amplitude')
-    # plt.show()
-    #convoluate singal and filter together
-    newsignal = scipy.signal.convolve(filter,signal, mode='full')
 
-    #     #fft the band reject filter and signal
-    # filter = np.fft.fft(filter)
-    # signalFFT = np.fft.fft(signal)
-    #     #multiply both of them
-    # signalfiltered = signalFFT * filter
-    #     #reverse fft of the mupltiplication
-    # signalfiltered = np.fft.ifft(signal)
-    fig2, (axb1, axb2) = plt.subplots(2, 1)
-    x = range(len(newsignal))
-    axb1.plot(x, newsignal)
-    x = range(len(signal))
-    axb2.plot(x, signal)
-    plt.title('old singal')
 
-    plt.xlabel('time')
-    plt.ylabel('Amplitude')
-    plt.show()
-    #save as a wave file
-wave_file = wave.open("note_basson_minus_sinus_1000_Hz.wav", "w")
-wave_file.setnchannels(1) # Mono
-wave_file.setsampwidth(16// 8) # Sample width in bytes
-wave_file.setframerate(sample_rate) # Sample rate in Hz
-# Write waveform data to wave file
-wave_file.writeframes(newsignal)
-# Close wave file
-wave_file.close()
+
+#convert to a bandreject filter
+
+print(d)
+    #calculate w0
+w0 = 2*np.pi*f0/fe
+    #evaluate to the new formula
+
+for i in range(0,N,1):
+    Hk[i] = d[i] - np.multiply(2 * Hk[i], np.cos(w0 * k[i]))
+    #Hk[i] = d[i] - 2*Hk[i] * np.cos(w0*k[i])
+plt.plot(pos,Hk)
+plt.title("Hk band reject")
+plt.xlabel('temps')
+plt.ylabel('Amplitude')
+plt.show()
+
+Hm = np.fft.fft(Hk)
+cb_freqs = np.fft.fftfreq(len(Hm), d=1 / fe)
+plt.plot(cb_freqs[:500], 20 * np.log10(np.abs(Hm[:500])))
+plt.title("Hk band reject in frequency domain")
+plt.xlabel('Fréquence')
+plt.ylabel('Amplitude(dB)')
+plt.show()
+
+#convoluate
+
+SigFiltered = np.convolve(signal,Hk)
+SigFiltered = np.convolve(signal,Hk)
+SigFiltered = np.convolve(SigFiltered,Hk)
+plt.plot(SigFiltered)
+plt.title("Hk band reject in frequency domain")
+plt.xlabel('Fréquence')
+plt.ylabel('Amplitude(dB)')
+plt.show()
+#save to a .wave file
+with wave.open("note_basson_minus_sinus_1000_Hz.wav","wb") as write:
+    write.setparams(params)
+    waveform_data = np.zeros(len(SigFiltered))
+    #write.writeframes(SigFiltered.tobytes())
+    for sample in SigFiltered:
+        write.writeframes(struct.pack('h', np.int16(sample)))
+
+
 
