@@ -1,6 +1,7 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.io.wavfile as wavfile
 def parametre_fichier_audio() :
     with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
         # nb d'échantillon du fichier
@@ -14,4 +15,6 @@ def parametre_fichier_audio() :
 
         #Convertir les échantillons audio en une série temporelle de valeurs d'amplitude
         signal = np.frombuffer(frames, dtype=np.int16)
-    return num_frames, sample_rate, frames, signal
+
+    sample_rate, signal = wavfile.read('note_guitare_LAd.wav')
+    return signal, sample_rate, num_frames

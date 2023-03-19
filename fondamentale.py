@@ -1,7 +1,6 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
-from harmoniques import *
 
 def fct_fondamentale(signal, sample_rate):
     # Appliquer une fenêtre de Hanning
