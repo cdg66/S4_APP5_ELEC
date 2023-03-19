@@ -43,6 +43,9 @@ def fct_harmoniques(signal, sample_rate):
     for i in range(len(harmonique_amplitude)):
         sin_sum += harmonique_amplitude[i] * np.sin(2 * np.pi * harmonique_frequence[i] * np.arange(len(signal)) + harmonique_phase[i])
 
+        # Normalize sin_sum to have values between -1 and 1
+       # sin_sum = sin_sum / np.max(np.abs(sin_sum))
+
     # Retourner les amplitudes, phases et fréquences des 32 harmoniques
     for i in range(len(harmonique_amplitude)):
         print(
