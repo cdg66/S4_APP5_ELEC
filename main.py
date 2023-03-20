@@ -1,57 +1,95 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
-from DFT import *
+from harmonique import *
+from calcule_du_N import *
+from fondamentale import *
+from enveloppe_temporel import *
+from generer_audio import *
+from Ouvrir_fichier_audio import *
+#from fct_generer_note import *
 
-with wave.open('note_guitare_LAd.wav', 'rb') as wav_file:
-    # nb d'échantillon du fichier
-    num_frames = wav_file.getnframes()
+signal, sample_rate,num_frames = parametre_fichier_audio()
 
-    # Retourne la fréquence d'échantillonage en Hz
-    sample_rate = wav_file.getframerate()
+harmonique_amplitude, harmonique_phase, harmonique_frequence,somme_32_harmoniques = fct_harmoniques2(signal, sample_rate)
 
-    # lit tout le contenu du fichier et stock les amplitudes dans frames
-    frames = wav_file.readframes(num_frames)
+fondamentale_amplitude, fondamentale_phase, fondamentale_frequence, fft_signal_shift = fct_fondamentale(signal,sample_rate)
 
-    #Convertir les échantillons audio en une série temporelle de valeurs d'amplitude
-    signal = np.frombuffer(frames, dtype=np.int16)
+enveloppe, audio_synthese = fct_enveloppe(signal, sample_rate,somme_32_harmoniques)
 
-    freq_fundamental, fundamental_amplitude, harmonic_amplitude, harmonic_phases, harmonic_frequencies, fft_signal = fct_DFT(signal,sample_rate)
-    # graphique du FFT du signal
-    x = np.arange(num_frames)
-    plt.plot(x,signal)
-    plt.title('Signal audio originale')
-    plt.xlabel('Fréquence')
-    plt.ylabel('Amplitude')
-    plt.show()
+signale_recree = fct_generer_audio(audio_synthese ,sample_rate)
 
-    # graphique du FFT du signal
-    freq = np.fft.fftshift(np.fft.fftfreq(160000))
-    plt.plot(freq, np.abs(fft_signal))
-    plt.title('FFT du signal audio')
+#fct_generer_note(fondamentale_frequence)
 
-    plt.xlabel('Fréquence')
-    plt.ylabel('Amplitude')
-    plt.show()
+N = fct_calcule_N()
 
-    fig, axs = plt.subplots(2, 1)
-    t_fft1 = np.linspace(-0.5, 0.5, 79999, endpoint=False)
-    axs[0].stem(harmonic_amplitude)
-    axs[0].set_title('Module de X1')
+def fct_graph_fft(graph_fft):
+    if graph_fft == True:
+        # graphique du signal originale
+        x = np.arange(num_frames)
+        plt.plot(x,signal)
+        plt.plot(x, enveloppe)
+        #plt.plot(x, audio_synthese)
+        plt.title('Signal audio originale')
+        plt.xlabel('Échantillons')
+        plt.ylabel('Amplitude')
+        plt.show()
 
-    axs[1].stem(harmonic_phases)
-    axs[1].set_title('Angle de X1')
+        # graphique module signal FFT
+        freq = np.fft.fftshift(np.fft.fftfreq(160000))
+        fft_signal_shift_1 = 20*np.log10(fft_signal_shift)
+        plt.plot(freq, np.abs(fft_signal_shift_1))
+        plt.title('FFT du signal audio')
+        plt.xlabel('Fréquences')
+        plt.ylabel('Amplitude')
+        plt.show()
+    else:
+        return 0
 
-    plt.tight_layout()
-    plt.show()
+def fct_graph_harmoniques(graph_harmoniques):
+    if graph_harmoniques == True:
 
-    # fq= ((freqs / 2)-1)
-    # plt.stem(fq, harmonic_amplitude)
-    # plt.xlabel('Fréquence (Hz)')
-    # plt.ylabel('Amplitude')
-    # plt.title('Amplitude des harmoniques')
-    # plt.show()
-#x = np.arange(-(num_frames/2),num_frames/2,1)
-    # x = np.arange(-(len(harmonic_amplitude)/2), (len(harmonic_amplitude)/2), 1)
-    #plt.plot(x, np.abs(fft_signal))
-    # plt.xlim(65000, 95000)
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))
+
+        ax1.stem(harmonique_frequence, harmonique_amplitude)
+        ax1.set_title('Modules des harmoniques')
+        ax1.set_yscale('log')
+        ax1.set_xlabel("Fréquences en Hz")
+        ax1.set_ylabel("Amplitude")
+
+        ax2.stem(harmonique_frequence, harmonique_phase)
+        ax2.set_xlabel("Fréquences en Hz")
+        ax2.set_title('Phases des harmoniques')
+        ax2.set_ylabel("Amplitude")
+
+        plt.tight_layout()
+        plt.show()
+    else:
+        return 0
+
+def fct_graph_synthese_enveloppe(graph_synthese_enveloppe):
+    if graph_synthese_enveloppe == True:
+
+        # on fait le graphique de l'enveloppe icite
+        x = np.arange(160000)
+        plt.plot(x, enveloppe)
+        plt.xlabel("Échantillons")
+        plt.ylabel("Amplitude")
+        plt.show()
+
+        # on fait le graphique de la synthese audio icite
+        plt.plot(x, audio_synthese)
+        plt.xlabel("Échantillons")
+        plt.ylabel("Amplitude")
+        plt.show()
+    else:
+        return 0
+
+fct_graph_fft(graph_fft=True)
+
+fct_graph_harmoniques(graph_harmoniques=False)
+
+fct_graph_synthese_enveloppe(graph_synthese_enveloppe=False)
+
+
+
