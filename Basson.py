@@ -1,6 +1,7 @@
 import numpy as np
+import wave
+import matplotlib.pyplot as plt
 
-from DFT import *
 import struct
 import scipy
 
@@ -75,7 +76,7 @@ w0 = 2*np.pi*f0/fe
 
 for i in range(0,N,1):
     Hk[i] = d[i] - np.multiply(2 * Hk[i], np.cos(w0 * k[i]))
-    #Hk[i] = d[i] - 2*Hk[i] * np.cos(w0*k[i])
+
 plt.plot(pos,Hk)
 plt.title("Hk band reject")
 plt.xlabel('temps')
