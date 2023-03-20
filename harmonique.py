@@ -4,19 +4,17 @@ import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 
 def fct_harmoniques2(signal, sample_rate):
-    # calcul du fft ainsi que c'est attribut
-    # Appliquer une fenêtre de Hanning
     window = np.hanning(len(signal))
     windowed_signal = signal * window
 
-    # Calculer la DFT
+    # Calcule fft
     fft_signal = np.fft.fft(windowed_signal)
     #fft_signal_shift = np.fft.fftshift(fft_signal)
     frequences = np.fft.fftfreq(len(fft_signal)) * sample_rate
     module_signale = np.abs(fft_signal)
     module_phase = np.angle(fft_signal)
 
-    # find harmonic
+    # trouver les 32 harmoniques
     n = 33
     harmonique_frequence = [0] * n
     harmonique_amplitude = [0] * n

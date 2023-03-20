@@ -79,11 +79,11 @@ def fct_graph_synthese_enveloppe(graph_synthese_enveloppe):
     else:
         return 0
 
-fct_graph_fft(graph_fft=False)
+fct_graph_fft(graph_fft=True)
 
 fct_graph_harmoniques(graph_harmoniques=False)
 
-fct_graph_synthese_enveloppe(graph_synthese_enveloppe=True)
+fct_graph_synthese_enveloppe(graph_synthese_enveloppe=False)
 
 
 
