@@ -22,10 +22,11 @@ enveloppe, audio_synthese = fct_enveloppe(signal, sample_rate,somme_32_harmoniqu
 
 signale_recree = fct_generer_audio(audio_synthese ,sample_rate)
 
-fct_re(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
-fct_fa(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
-fct_mi_be(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
-fct_sol(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+re = fct_re(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+fa = fct_fa(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+mib = fct_mi_be(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+sol = fct_sol(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+fct_baathovenize(sol,mib,fa,re, sample_rate)
 
 N = fct_calcule_N()
 

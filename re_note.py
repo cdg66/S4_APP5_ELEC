@@ -3,12 +3,12 @@ import numpy as np
 
 def fct_re(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal):
    # generation du re
-    x = np.arange(160000)
-    note_re = np.zeros(len(fft_signal))
+    x = np.arange(23000)
+    note_re = np.zeros(len(x))
     for i in range(33):
         note_re += harmonique_amplitude[i] * np.sin(2 * np.pi * ((harmonique_frequence[i] / 1.06) * 0.667 / sample_rate) * x + harmonique_phase[i])
 
-    re_synthese = enveloppe * note_re
+    re_synthese = enveloppe[0:len(x)] * note_re
     re_synthese = re_synthese * 32000 / np.max(np.abs(re_synthese))  # normalise la sythese audio
 
     wavefile = wave.open('re_synthese.wav', 'w')
@@ -19,3 +19,4 @@ def fct_re(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmo
     for patate in re_synthese:
         wavefile.writeframesraw(np.int16(patate).tobytes())
     wavefile.close()
+    return re_synthese
