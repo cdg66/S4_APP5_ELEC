@@ -25,7 +25,7 @@ def fct_harmoniques2(signal, sample_rate):
         harmonique_frequence[i] = frequences[index]
         harmonique_amplitude[i] = module_signale[index] / len(fft_signal)
         harmonique_phase[i] = module_phase[index]
-        print(f"Harmoniques {i} Frequency: {harmonique_frequence[i]:.2f} Hz, Amplitude: {harmonique_amplitude[i]:.2f},"f" module_phase: {harmonique_phase[i]:.2f} radians")
+        #print(f"Harmoniques {i} Frequency: {harmonique_frequence[i]:.2f} Hz, Amplitude: {harmonique_amplitude[i]:.2f},"f" module_phase: {harmonique_phase[i]:.2f} radians")
 
     # sommation des 32 harmoniques
     x = np.arange(160000)
