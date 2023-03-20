@@ -33,4 +33,4 @@ def fct_harmoniques2(signal, sample_rate):
     for i in range(33):
         som_32_harmoniques += harmonique_amplitude[i] * np.sin(2 * np.pi * (harmonique_frequence[i]/sample_rate) * x + harmonique_phase[i])
 
-    return harmonique_amplitude, harmonique_phase, harmonique_frequence, som_32_harmoniques
+    return harmonique_amplitude, harmonique_phase, harmonique_frequence, som_32_harmoniques,fft_signal

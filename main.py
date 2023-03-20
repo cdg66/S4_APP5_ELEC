@@ -7,13 +7,14 @@ from fondamentale import *
 from enveloppe_temporel import *
 from generer_audio import *
 from Ouvrir_fichier_audio import *
-from genrer_note import *
-from bathoven import fct_bathoven as gen_audio
-#from fct_generer_note import *
+from sol import *
+from re import *
+from mi_be import *
+from fa import *
 
 signal, sample_rate,num_frames = parametre_fichier_audio()
 
-harmonique_amplitude, harmonique_phase, harmonique_frequence,somme_32_harmoniques = fct_harmoniques2(signal, sample_rate)
+harmonique_amplitude, harmonique_phase, harmonique_frequence,somme_32_harmoniques,fft_signal = fct_harmoniques2(signal, sample_rate)
 
 fondamentale_amplitude, fondamentale_phase, fondamentale_frequence, fft_signal_shift = fct_fondamentale(signal,sample_rate)
 
@@ -21,11 +22,11 @@ enveloppe, audio_synthese = fct_enveloppe(signal, sample_rate,somme_32_harmoniqu
 
 signale_recree = fct_generer_audio(audio_synthese ,sample_rate)
 
-fondamentale_transformee = fct_generer_note(fondamentale_frequence)
+fct_re(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+fct_fa(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+fct_mi_be(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
+fct_sol(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
 
-
-Sol = gen_audio(fondamentale_transformee, harmonique_amplitude,harmonique_phase,enveloppe,sample_rate )
-fct_generer_audio_synth(Sol, sample_rate, 'Sol.wav')
 N = fct_calcule_N()
 
 def fct_graph_fft(graph_fft):
