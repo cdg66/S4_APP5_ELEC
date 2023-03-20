@@ -7,6 +7,8 @@ from fondamentale import *
 from enveloppe_temporel import *
 from generer_audio import *
 from Ouvrir_fichier_audio import *
+from genrer_note import *
+from bathoven import fct_bathoven as gen_audio
 #from fct_generer_note import *
 
 signal, sample_rate,num_frames = parametre_fichier_audio()
@@ -19,8 +21,11 @@ enveloppe, audio_synthese = fct_enveloppe(signal, sample_rate,somme_32_harmoniqu
 
 signale_recree = fct_generer_audio(audio_synthese ,sample_rate)
 
-#fct_generer_note(fondamentale_frequence)
+fondamentale_transformee = fct_generer_note(fondamentale_frequence)
 
+
+Sol = gen_audio(fondamentale_transformee, harmonique_amplitude,harmonique_phase,enveloppe,sample_rate )
+fct_generer_audio_synth(Sol, sample_rate, 'Sol.wav')
 N = fct_calcule_N()
 
 def fct_graph_fft(graph_fft):
@@ -85,7 +90,7 @@ def fct_graph_synthese_enveloppe(graph_synthese_enveloppe):
     else:
         return 0
 
-fct_graph_fft(graph_fft=True)
+fct_graph_fft(graph_fft=False)
 
 fct_graph_harmoniques(graph_harmoniques=False)
 

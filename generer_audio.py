@@ -13,4 +13,15 @@ def fct_generer_audio(audio_synthese, sample_rate):
        #wavefile.writeframes(struct.pack('h', np.int16(patate)))
 
     wavefile.close()
+def fct_generer_audio_synth(audio_synthese, sample_rate, note='Sol.wav'):
+    wavefile = wave.open(note, 'w')
+    wavefile.setframerate(sample_rate)
+    wavefile.setnchannels(1)
+    wavefile.setsampwidth(2)
+
+    for patate in audio_synthese:
+        wavefile.writeframesraw(np.int16(patate).tobytes())
+       #wavefile.writeframes(struct.pack('h', np.int16(patate)))
+
+    wavefile.close()
 
