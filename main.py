@@ -35,7 +35,7 @@ fct_baathovenize(sol,mib,fa,re, sample_rate)
 
 def fct_graph_fft(graph_fft):
     if graph_fft == True:
-        # graphique du signal originale
+        # on met icite le graphique du signal originale
         x = np.arange(num_frames)
         plt.plot(x,signal)
         plt.plot(x, enveloppe)
@@ -45,14 +45,21 @@ def fct_graph_fft(graph_fft):
         plt.ylabel('Amplitude')
         plt.show()
 
-        # graphique module signal FFT
-        freq = np.fft.fftshift(np.fft.fftfreq(160000))
-        fft_signal_shift_1 = 20*np.log10(fft_signal_shift)
-        plt.plot(freq, np.abs(fft_signal_shift_1))
+        # on met icite le graphique module signal FFT
+        fft_signal_shift = np.fft.fftshift(np.fft.fft(signal))
+        freq = np.fft.fftshift(np.fft.fftfreq(len(fft_signal_shift)))
+        fft_signal_shift_db = 20 * np.log10(np.abs(fft_signal_shift))
+        freq_hz = freq * len(signal)  # conversion de l'unité des fréquences
+        mask = (freq_hz >= -17000) & (freq_hz <= 17000)  # création d'un masque pour filtrer les fréquences
+        plt.plot(freq_hz[mask], fft_signal_shift_db[mask])
         plt.title('FFT du signal audio')
-        plt.xlabel('Fréquences')
-        plt.ylabel('Amplitude')
+        plt.xlabel('Fréquences (Hz)')
+        plt.ylabel('Amplitude (dB)')
         plt.show()
+
+
+
+
     else:
         return 0
 
@@ -95,7 +102,7 @@ def fct_graph_synthese_enveloppe(graph_synthese_enveloppe):
     else:
         return 0
 
-fct_graph_fft(graph_fft=False)
+fct_graph_fft(graph_fft=True)
 
 fct_graph_harmoniques(graph_harmoniques=False)
 
