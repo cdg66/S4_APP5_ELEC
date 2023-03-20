@@ -52,8 +52,8 @@ for i in range(len(Hk)):
         Hk[i] = K/N  # or any other value you want to assign when denominator is zero
 print(Hk)
 
-#han = np.hanning(len(Hk))
-#Hk = han * Hk
+han = np.hanning(len(Hk))
+Hk = han * Hk
 
 plt.plot(pos,Hk)
 plt.title("Hk lowpass")
@@ -62,8 +62,8 @@ plt.ylabel('Amplitude')
 plt.show()
 
 
-han = np.hanning(len(Hk))
-Hk = han * Hk
+# han = np.hanning(len(Hk))
+# Hk = han * Hk
 
 
 #convert to a bandreject filter
@@ -82,7 +82,7 @@ plt.xlabel('temps')
 plt.ylabel('Amplitude')
 plt.show()
 
-Hm = np.fft.fft(Hk, n=5000)
+Hm = np.fft.fft(Hk)
 x_freqs = np.fft.fftfreq(len(Hm), d=1 / fe)
 plt.plot(x_freqs[:300], 20 * np.log10(np.abs(Hm[:300])))
 plt.title("Hk band reject in frequency domain")
@@ -99,11 +99,11 @@ sinus_FFT = np.fft.fft(sinus)
 sin_X_FFT = np.fft.fftfreq(len(sinus_FFT), d=1/fe)
 sinus_filtered_FFT = np.fft.fft(sinus_filtered)
 sin_filtered_X_FFT = np.fft.fftfreq(len(sinus_filtered_FFT), d=1/fe)
-plt.plot(sinus_time , sinus)
+plt.plot(sinus[0:2500])
 plt.xlabel("Échantillon")
 plt.ylabel("Amplitude")
 plt.show()
-plt.plot(sinus_filtered)
+plt.plot(sinus_filtered[0:2500])
 plt.xlabel("Échantillon")
 plt.ylabel("Amplitude")
 plt.show()
@@ -116,7 +116,7 @@ plt.show()
 plt.plot(sinus_filtered)
 plt.xlabel("Échantillon")
 plt.ylabel("Amplitude")
-plt.show()
+
 
 #convoluate
 
@@ -131,7 +131,7 @@ ax1.set_title('Signal audio originale')
 ax1.set_xlabel('Fréquence')
 ax1.set_ylabel('Amplitude')
 ax2.plot(SigFiltered)
-ax2.set_title("signal filtered in the time domain")
+ax2.set_title("signal passe dans le filtre 5 fois")
 ax2.set_xlabel('Amplitudes')
 ax2.set_ylabel('time(samples)')
 plt.show()
@@ -146,7 +146,7 @@ ax3.set_ylabel('Amplitude(dB)')
 xfFFT = np.fft.fftfreq(len(np.fft.fft(SigFiltered)), d=1/fe)
 sfFFT = np.fft.fft(SigFiltered)
 ax4.plot(xfFFT[511:5000], 20*np.log10(abs(sfFFT[511:5000])))
-ax4.set_title("signal filtered in frequency domain")
+ax4.set_title("signal filtered in the frequency domain")
 ax4.set_xlabel('Fréquence')
 ax4.set_ylabel('Amplitude(dB)')
 plt.show()
