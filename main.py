@@ -8,7 +8,7 @@ from enveloppe_temporel import *
 from generer_audio import *
 from Ouvrir_fichier_audio import *
 from sol import *
-from re import *
+from re_note import *
 from mi_be import *
 from fa import *
 
