@@ -7,6 +7,7 @@ from fondamentale import *
 from enveloppe_temporel import *
 from generer_audio import *
 from Ouvrir_fichier_audio import *
+#from fct_generer_note import *
 
 signal, sample_rate,num_frames = parametre_fichier_audio()
 
@@ -17,6 +18,8 @@ fondamentale_amplitude, fondamentale_phase, fondamentale_frequence, fft_signal_s
 enveloppe, audio_synthese = fct_enveloppe(signal, sample_rate,somme_32_harmoniques)
 
 signale_recree = fct_generer_audio(audio_synthese ,sample_rate)
+
+#fct_generer_note(fondamentale_frequence)
 
 N = fct_calcule_N()
 
