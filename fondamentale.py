@@ -11,12 +11,14 @@ def fct_fondamentale(signal, sample_rate):
     fft_signal = np.fft.fft(windowed_signal)
     fft_signal_shift = np.fft.fftshift(fft_signal)
     freqs = np.fft.fftfreq(len(fft_signal)) * sample_rate
+
     #  calcule les magnitudes et phase des coefficients de la DFT.
     mag_fft_signal = np.abs(fft_signal)
     phase_fft_signal = np.angle(fft_signal)
+
     # détermine l'indice de la fondamentale
     index = np.argmax(mag_fft_signal)
-    #index = 1691
+
     # détermine la fréquence de la fondamentale
     fondamentale_frequence = freqs[index]
 

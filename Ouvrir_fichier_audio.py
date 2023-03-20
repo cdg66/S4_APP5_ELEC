@@ -16,5 +16,4 @@ def parametre_fichier_audio() :
         #Convertir les échantillons audio en une série temporelle de valeurs d'amplitude
         signal = np.frombuffer(frames, dtype=np.int16)
 
-    sample_rate, signal = wavfile.read('note_guitare_LAd.wav')
     return signal, sample_rate, num_frames
