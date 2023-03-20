@@ -2,6 +2,7 @@ import wave
 import numpy as np
 import matplotlib.pyplot as plt
 from harmonique import *
+from calcule_du_N import *
 from fondamentale import *
 from enveloppe_temporel import *
 from generer_audio import *
@@ -17,13 +18,15 @@ enveloppe, audio_synthese = fct_enveloppe(signal, sample_rate,somme_32_harmoniqu
 
 signale_recree = fct_generer_audio(audio_synthese ,sample_rate)
 
+N = fct_calcule_N()
+
 def fct_graph_fft(graph_fft):
     if graph_fft == True:
         # graphique du signal originale
         x = np.arange(num_frames)
         plt.plot(x,signal)
         plt.plot(x, enveloppe)
-        plt.plot(x, audio_synthese)
+        #plt.plot(x, audio_synthese)
         plt.title('Signal audio originale')
         plt.xlabel('Échantillons')
         plt.ylabel('Amplitude')
