@@ -1,5 +1,4 @@
 import wave
-import struct
 import numpy as np
 
 def fct_generer_audio(audio_synthese, sample_rate):

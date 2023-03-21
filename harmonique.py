@@ -1,7 +1,6 @@
-import wave
+
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import find_peaks
+
 
 def fct_harmoniques2(signal, sample_rate):
     window = np.hanning(len(signal))
