@@ -1,6 +1,4 @@
-
 import numpy as np
-
 
 def fct_harmoniques2(signal, sample_rate):
     window = np.hanning(len(signal))
@@ -14,8 +12,8 @@ def fct_harmoniques2(signal, sample_rate):
 
     # trouver les 32 harmoniques
     n = 33
-    harmonique_frequence = [0] * n
     harmonique_amplitude = [0] * n
+    harmonique_frequence = [0] * n
     harmonique_phase = [0] * n
 
     for i in range(33):
@@ -23,9 +21,7 @@ def fct_harmoniques2(signal, sample_rate):
         harmonique_frequence[i] = frequences[j]
         harmonique_amplitude[i] = module_signale[j] / len(fft_signal)
         harmonique_phase[i] = module_phase[j]
-        print(f"Harmoniques {i} Frequency: {harmonique_frequence[i]:.2f} Hz, Amplitude: {harmonique_amplitude[i]:.2f},"f" module_phase: {harmonique_phase[i]:.2f} radians")
 
-    # somme 32 harmoniques
     x = np.arange(160000)
     som_32_harmoniques = np.zeros(len(fft_signal))
     for i in range(33):

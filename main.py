@@ -29,7 +29,26 @@ mib = fct_mi_be(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,
 sol = fct_sol(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmonique_phase,fft_signal)
 fct_baathovenize(sol,mib,fa,re, sample_rate)
 
+def fct_graph_synthese_enveloppe(graph_synthese_enveloppe):
+    if graph_synthese_enveloppe == True:
 
+        # on fait le graphique de l'enveloppe icite
+        x = np.arange(160000)
+        plt.plot(x, enveloppe)
+        plt.title('Enveloppe temporelle', fontdict={'fontsize': 18})
+        plt.xlabel("Échantillons", fontdict={'fontsize': 16})
+        plt.ylabel("Amplitude", fontdict={'fontsize': 16})
+        plt.xticks(fontsize=16)
+        plt.yticks(fontsize=16)
+        plt.show()
+
+        # on fait le graphique de la synthese audio icite
+        plt.plot(x, audio_synthese)
+        plt.xlabel("Échantillons")
+        plt.ylabel("Amplitude")
+        plt.show()
+    else:
+        return 0
 
 def fct_graph_fft(graph_fft):
     if graph_fft == True:
@@ -81,27 +100,6 @@ def fct_graph_harmoniques(graph_harmoniques):
         plt.tight_layout()
         plt.show()
 
-    else:
-        return 0
-
-def fct_graph_synthese_enveloppe(graph_synthese_enveloppe):
-    if graph_synthese_enveloppe == True:
-
-        # on fait le graphique de l'enveloppe icite
-        x = np.arange(160000)
-        plt.plot(x, enveloppe)
-        plt.title('Enveloppe temporelle', fontdict={'fontsize': 18})
-        plt.xlabel("Échantillons", fontdict={'fontsize': 16})
-        plt.ylabel("Amplitude", fontdict={'fontsize': 16})
-        plt.xticks(fontsize=16)
-        plt.yticks(fontsize=16)
-        plt.show()
-
-        # on fait le graphique de la synthese audio icite
-        plt.plot(x, audio_synthese)
-        plt.xlabel("Échantillons")
-        plt.ylabel("Amplitude")
-        plt.show()
     else:
         return 0
 

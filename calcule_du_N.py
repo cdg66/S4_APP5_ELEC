@@ -1,5 +1,4 @@
 import math
-
 import numpy as np
 w = np.pi/1000
 def fct_calcule_N():

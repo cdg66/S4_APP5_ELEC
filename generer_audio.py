@@ -3,9 +3,10 @@ import numpy as np
 
 def fct_generer_audio(audio_synthese, sample_rate):
     wavefile = wave.open('synthese_LA_guitare.wav', 'w')
+    wavefile.setsampwidth(2)
     wavefile.setframerate(sample_rate)
     wavefile.setnchannels(1)
-    wavefile.setsampwidth(2)
+
 
     for patate in audio_synthese:
         wavefile.writeframesraw(np.int16(patate).tobytes())
@@ -13,9 +14,9 @@ def fct_generer_audio(audio_synthese, sample_rate):
 
 def fct_baathovenize(sol,mib,fa,re, sample_rate):
     wavefile = wave.open('la_5e_synthese_de_baathoven.wav', 'w')
+    wavefile.setsampwidth(2)
     wavefile.setframerate(sample_rate)
     wavefile.setnchannels(1)
-    wavefile.setsampwidth(2)
     audio_synthese = []
     audio_synthese = np.append(audio_synthese,[sol,sol,sol])
     audio_synthese = np.append(audio_synthese, mib)

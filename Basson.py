@@ -1,9 +1,8 @@
 import numpy as np
 import wave
 import matplotlib.pyplot as plt
-
 import struct
-import scipy
+
 
 with wave.open('note_basson_plus_sinus_1000_Hz.wav', 'rb') as wav_file:
     # nb d'échantillon du fichier
@@ -20,13 +19,9 @@ with wave.open('note_basson_plus_sinus_1000_Hz.wav', 'rb') as wav_file:
 
     params = wav_file.getparams()
 
-#freq_fundamental, fundamental_amplitude, harmonic_amplitude, harmonic_phases, harmonic_frequencies, fft_signal = fct_DFT(
-#    signal, sample_rate)
-# graphique du FFT du signal
 x = np.arange(num_frames)
 
 
-#calculate lowpassfilter
 N = 1024
 fe = sample_rate
 f0 = 1000
@@ -43,14 +38,14 @@ print(k)
 Hk = np.zeros(N)
 pos = np.linspace(-(N / 2) + 1, N / 2, N)
 index = np.arange(0,N,1)
-d = np.zeros(N) #dirac
+d = np.zeros(N)
 d[512] = 1
 for i in range(len(Hk)):
 
     if k[i] != 0:
         Hk[i] = (1/N)*(np.sin((np.pi * k[i]* K)/N )/np.sin((np.pi * k[i])/N ))
     else:
-        Hk[i] = K/N  # or any other value you want to assign when denominator is zero
+        Hk[i] = K/N
 print(Hk)
 
 han = np.hanning(len(Hk))
@@ -63,16 +58,11 @@ plt.ylabel('Amplitude')
 plt.show()
 
 
-# han = np.hanning(len(Hk))
-# Hk = han * Hk
 
-
-#convert to a bandreject filter
 
 print(d)
     #calculate w0
 w0 = 2*np.pi*f0/fe
-    #evaluate to the new formula
 
 for i in range(0,N,1):
     Hk[i] = d[i] - np.multiply(2 * Hk[i], np.cos(w0 * k[i]))
@@ -90,8 +80,7 @@ plt.title("Hk band reject in frequency domain")
 plt.xlabel('Fréquence')
 plt.ylabel('Amplitude(dB)')
 plt.show()
-#calculate the response of a sinusoid at a frequency of 1000Hz
-# Generate time samples
+
 num_samples = 1 * fe
 sinus_time = np.linspace(0, 1, num_samples, endpoint=False)
 sinus = np.sin(2 * f0 * np.pi  *sinus_time)
@@ -119,7 +108,7 @@ plt.xlabel("Échantillon")
 plt.ylabel("Amplitude")
 
 
-#convoluate
+
 
 SigFiltered = np.convolve(signal,Hk)
 SigFiltered = np.convolve(SigFiltered,Hk)
