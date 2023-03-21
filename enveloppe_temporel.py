@@ -31,8 +31,8 @@ def fct_enveloppe(signal, sample_rate, som_32_harmoniques, N):
        x_freqs = np.fft.fftfreq(len(Hm), d=1 / fe)
        plt.plot(x_freqs[:300], 20 * np.log10(np.abs(Hm[:300])))
        #plt.plot(x_freqs[:300], np.abs(Hm[:300]))
-       plt.title("Coupe bande dans le domaine des fréquences")
-       plt.xlabel('Fréquence')
+       plt.title("Basse-bas dans le domaine des fréquences")
+       plt.xlabel('Fréquences')
        plt.ylabel('Amplitude(dB)')
        plt.show()
 
