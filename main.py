@@ -92,9 +92,11 @@ def fct_graph_synthese_enveloppe(graph_synthese_enveloppe):
         # on fait le graphique de l'enveloppe icite
         x = np.arange(160000)
         plt.plot(x, enveloppe)
-        plt.title('Enveloppe temporelle')
-        plt.xlabel("Échantillons")
-        plt.ylabel("Amplitude")
+        plt.title('Enveloppe temporelle', fontdict={'fontsize': 18})
+        plt.xlabel("Échantillons", fontdict={'fontsize': 16})
+        plt.ylabel("Amplitude", fontdict={'fontsize': 16})
+        plt.xticks(fontsize=16)
+        plt.yticks(fontsize=16)
         plt.show()
 
         # on fait le graphique de la synthese audio icite

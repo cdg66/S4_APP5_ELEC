@@ -9,7 +9,6 @@ def fct_fa(enveloppe,sample_rate,harmonique_amplitude,harmonique_frequence,harmo
 
     fa_synthese = enveloppe[0:len(x)] * note_fa
     fa_synthese = fa_synthese * 32000 / np.max(np.abs(fa_synthese))  # normalise la sythese audio
-
     wavefile = wave.open('fa_synthese.wav', 'w')
     wavefile.setframerate(sample_rate)
     wavefile.setnchannels(1)
