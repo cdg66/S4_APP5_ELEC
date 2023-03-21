@@ -1,4 +1,3 @@
-
 from harmonique import *
 from calcule_du_N import *
 from fondamentale import *
@@ -34,6 +33,7 @@ fct_baathovenize(sol,mib,fa,re, sample_rate)
 
 def fct_graph_fft(graph_fft):
     if graph_fft == True:
+        #graph du signal temporel
         x = np.arange(num_frames)
         plt.plot(x, signal)
         plt.plot(x, enveloppe)
@@ -42,14 +42,13 @@ def fct_graph_fft(graph_fft):
         plt.ylabel('Amplitude', fontsize=16)
         plt.show()
 
-        # plot audio signal FFT
+        # graph de la FFT
         fft_signal_shift = np.fft.fftshift(np.fft.fft(signal))
         freq = np.fft.fftshift(np.fft.fftfreq(len(fft_signal_shift)))
         fft_signal_shift_db = 20 * np.log10(np.abs(fft_signal_shift))
-        freq_hz = freq * len(signal)  # conversion de l'unité des fréquences
-        mask = (freq_hz >= -17000) & (freq_hz <= 17000)  # création d'un masque pour filtrer les fréquences
+        freq_hz = freq * len(signal)
+        mask = (freq_hz >= -17000) & (freq_hz <= 17000)
 
-        # create figure and axes objects
         fig, ax1 = plt.subplots()
         ax1.plot(freq_hz[mask], fft_signal_shift_db[mask])
         ax1.set_xlabel('Fréquences (Hz)', fontsize=16)
@@ -66,7 +65,6 @@ def fct_graph_harmoniques(graph_harmoniques):
     if graph_harmoniques == True:
 
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))
-
         ax1.stem(harmonique_frequence, harmonique_amplitude)
         ax1.set_title('Modules des harmoniques', fontsize=18)
         ax1.set_yscale('log')

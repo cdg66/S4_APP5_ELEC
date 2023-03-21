@@ -9,8 +9,6 @@ def fct_generer_audio(audio_synthese, sample_rate):
 
     for patate in audio_synthese:
         wavefile.writeframesraw(np.int16(patate).tobytes())
-       #wavefile.writeframes(struct.pack('h', np.int16(patate)))
-
     wavefile.close()
 
 def fct_baathovenize(sol,mib,fa,re, sample_rate):
@@ -26,6 +24,6 @@ def fct_baathovenize(sol,mib,fa,re, sample_rate):
     audio_synthese = np.append(audio_synthese,re)
     for patate in audio_synthese:
         wavefile.writeframesraw(np.int16(patate).tobytes())
-       #wavefile.writeframes(struct.pack('h', np.int16(patate)))
+
 
     wavefile.close()

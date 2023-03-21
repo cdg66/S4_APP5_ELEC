@@ -46,7 +46,7 @@ index = np.arange(0,N,1)
 d = np.zeros(N) #dirac
 d[512] = 1
 for i in range(len(Hk)):
-    #denominator = np.sin((np.pi * k[i]) / N)
+
     if k[i] != 0:
         Hk[i] = (1/N)*(np.sin((np.pi * k[i]* K)/N )/np.sin((np.pi * k[i])/N ))
     else:
@@ -167,10 +167,8 @@ plt.show()
 with wave.open("note_basson_minus_sinus_1000_Hz.wav","wb") as write:
     write.setparams(params)
     waveform_data = np.zeros(len(SigFiltered))
-    #write.writeframes(SigFiltered.tobytes())
     for sample in SigFiltered:
         write.writeframes(struct.pack('h', np.int16(sample)))
-        #write.writeframes(struct.pack('h', sample))
 
 
 

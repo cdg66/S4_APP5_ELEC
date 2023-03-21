@@ -4,7 +4,6 @@ def fct_enveloppe(signal, sample_rate, som_32_harmoniques, N):
        abs_signal = abs(signal)
        #fc = np.pi/1000
        fe =sample_rate
-       # apply low-pass filter
        fc = (np.pi / 1000) * fe / (2 * np.pi)
        m = (fc * N) / fe
        #print(m)
@@ -18,12 +17,10 @@ def fct_enveloppe(signal, sample_rate, som_32_harmoniques, N):
        d = np.zeros(N)  # dirac
        d[512] = 1
        for i in range(len(Hk)):
-              # denominator = np.sin((np.pi * k[i]) / N)
               if k[i] != 0:
                      Hk[i] = (1 / N) * (np.sin((np.pi * k[i] * K) / N) / np.sin((np.pi * k[i]) / N))
               else:
                      Hk[i] = K / N  # or any other value you want to assign when denominator is zero
-       #print(Hk)
        envelope = np.convolve(abs_signal, Hk, mode='same')
        audio_synthese = envelope * som_32_harmoniques
        audio_synthese = audio_synthese * 32000 / np.max(np.abs(audio_synthese))
