@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 import struct
 import scipy
+from scipy.signal import find_peaks
 
 with wave.open('note_basson_plus_sinus_1000_Hz.wav', 'rb') as wav_file:
     # nb d'échantillon du fichier
@@ -126,7 +127,52 @@ SigFiltered = np.convolve(SigFiltered,Hk)
 SigFiltered = np.convolve(SigFiltered,Hk)
 SigFiltered = np.convolve(SigFiltered,Hk)
 SigFiltered = np.convolve(SigFiltered,Hk)
-fig, (ax1, ax2) = plt.subplots(2, 1, layout='constrained', sharey=True)
+SigFiltered = np.convolve(SigFiltered,Hk)
+SigFiltered = np.convolve(SigFiltered,Hk)
+SigFiltered = np.convolve(SigFiltered,Hk)
+fft_sign_filtered = np.fft.fft(SigFiltered)
+
+mag_fft_signal = np.abs(fft_sign_filtered)
+phase_fft_signal = np.angle(fft_sign_filtered)
+freq= np.fft.fftfreq(len(fft_sign_filtered), d=1/fe)
+index, _ = find_peaks(mag_fft_signal,900000)
+index = index[73]
+# on trouve les harmoniques ici
+n = 32
+harmonique_frequence = [0] * n
+harmonique_amplitude = [0] * n
+harmonique_phase = [0] * n
+
+for i in range(1, n):
+    harmonique_frequence[i-1] = freq[index*i]
+    harmonique_amplitude[i-1] = mag_fft_signal[index*i]
+    harmonique_phase[i-1] = phase_fft_signal[index*i]
+    print(
+        f"Harmoniques {i-1} Frequency: {harmonique_frequence[i-1]:.2f} Hz, Amplitude: {harmonique_amplitude[i-1]:.2f},"f" module_phase: {harmonique_phase[i-1]:.2f} radians")
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))
+ax1.stem(harmonique_frequence, harmonique_amplitude)
+ax1.set_title('Modules des harmoniques', fontsize=18)
+ax1.set_yscale('log')
+ax1.set_xlabel("Fréquences en Hz", fontsize=16)
+ax1.set_ylabel("Amplitude", fontsize=16)
+ax1.tick_params(axis='both', which='major', labelsize=16, width=2)
+
+ax2.stem(harmonique_frequence, harmonique_phase)
+ax2.set_xlabel("Phases en rad", fontsize=16)
+ax2.set_title('Phases des harmoniques', fontsize=18)
+ax2.set_ylabel("Amplitude", fontsize=16)
+ax2.tick_params(axis='both', which='major', labelsize=16, width=2)
+
+plt.tight_layout()
+plt.show()
+
+# somme 32 harmoniques
+# x = np.arange(160000)
+# som_32_harmoniques = np.zeros(len(fft_sign_filtered))
+# for i in range(33):
+#     som_32_harmoniques += harmonique_amplitude[i] * np.sin(
+#         2 * np.pi * (harmonique_frequence[i] / sample_rate) * x + harmonique_phase[i])
+fig, (ax1, ax2) = plt.subplots(2, 1, sharey=True)
 ax1.plot(x, signal)
 ax1.set_title('Signal audio originale')
 ax1.set_xlabel('Fréquence')
@@ -137,7 +183,7 @@ ax2.set_xlabel('Amplitudes')
 ax2.set_ylabel('time(samples)')
 plt.show()
 
-fig2, (ax3, ax4) = plt.subplots(2, 1, layout='constrained', sharey=True)
+fig2, (ax3, ax4) = plt.subplots(2, 1,  sharey=True)
 xFFT = np.fft.fftfreq(len(np.fft.fft(signal)), d=1/fe)
 sFFT = np.fft.fft(signal)
 ax3.plot(xFFT[511:5000], 20*np.log10(abs(sFFT[511:5000])))
@@ -151,7 +197,7 @@ ax4.set_title("signal filtered in the frequency domain")
 ax4.set_xlabel('Fréquence')
 ax4.set_ylabel('Amplitude(dB)')
 plt.show()
-fig2, (ax5, ax6) = plt.subplots(2, 1, layout='constrained', sharey=True)
+fig2, (ax5, ax6) = plt.subplots(2, 1,  sharey=True)
 ax5.plot(xFFT[511:5000], np.angle(sFFT[511:5000], deg=False))
 ax5.set_title('Angle du signal original')
 ax5.set_xlabel('Fréquence')
